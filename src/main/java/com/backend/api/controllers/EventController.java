@@ -32,4 +32,12 @@ public class EventController {
                 .map(eventModel -> new ResponseDto("Successfully add new event" + eventModel.getTitle()))
                 .doOnError(throwable -> new ResponseDto(throwable.getMessage()));
     }
+
+    @DeleteMapping("/{id}")
+    public Mono<ResponseDto> deleteEventById(@PathVariable String id) {
+        return eventService
+                .deleteEventById(id)
+                .map(success -> new ResponseDto("Successfully delete event " + id))
+                .switchIfEmpty(Mono.just(new ResponseDto("Fail to delete. Cannot find event")));
+    }
 }

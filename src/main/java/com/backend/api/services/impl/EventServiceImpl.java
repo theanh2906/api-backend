@@ -30,4 +30,15 @@ public class EventServiceImpl implements EventService {
                 .save(event)
                 .switchIfEmpty(Mono.error(new RuntimeException("Could not add event")));
     }
+
+    @Override
+    public Mono<Boolean> deleteEventById(String eventId) {
+        return eventRepository
+                .findById(eventId)
+                .flatMap(found -> {
+                    eventRepository.deleteById(eventId).subscribe();
+                    return Mono.just(Boolean.TRUE);
+                })
+                .doOnError(throwable -> new RuntimeException("Cannot find event"));
+    }
 }

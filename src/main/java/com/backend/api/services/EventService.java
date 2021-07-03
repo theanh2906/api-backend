@@ -8,4 +8,5 @@ import reactor.core.publisher.Mono;
 public interface EventService {
     Flux<EventModel> getAllEvents();
     Mono<EventModel> addEvent(EventModel event);
+    Mono<Boolean> deleteEventById(String eventId);
 }
