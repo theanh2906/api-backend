@@ -17,6 +17,7 @@ public class EventDto {
     @JsonProperty("end")
     private String endDate;
     private String backgroundColor;
+    @JsonProperty("color")
     private String textColor;
     private String borderColor;
     private Boolean allDay;
