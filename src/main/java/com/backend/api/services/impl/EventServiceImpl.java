@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Iterator;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -40,5 +42,16 @@ public class EventServiceImpl implements EventService {
                     return Mono.just(Boolean.TRUE);
                 })
                 .doOnError(throwable -> new RuntimeException("Cannot find event"));
+    }
+
+    @Override
+    public Flux<Boolean> deleteEvents(List<String> ids) {
+        return eventRepository
+                .findAllById(ids)
+                .flatMap(found -> {
+                    eventRepository.delete(found).subscribe();
+                    return Flux.just(Boolean.TRUE);
+                })
+                .switchIfEmpty(Flux.just(Boolean.FALSE));
     }
 }

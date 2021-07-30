@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Comparator;
+import java.util.List;
+
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/events")
@@ -21,11 +24,11 @@ public class EventController {
     public Flux<EventDto> getAllEvents() {
         return eventService
                 .getAllEvents()
-                .map(EventMapper::toDto);
+                .map(EventMapper::toDto).sort(Comparator.comparing(EventDto::getStartDate));
     }
 
     @PostMapping("")
-    public Mono<ResponseDto> addEvent(@RequestBody EventDto dto) {
+    public Mono<ResponseDto> addEvents(@RequestBody EventDto dto) {
         final EventModel model = EventMapper.toModel(dto);
         return eventService
                 .addEvent(model)
@@ -33,6 +36,16 @@ public class EventController {
                 .doOnError(throwable -> new ResponseDto(throwable.getMessage()));
     }
 
+    @ResponseBody
+    @PostMapping("/delete")
+    public Mono<ResponseDto> deleteEvents(@RequestBody List<String> dtoList) {
+        return eventService
+                .deleteEvents(dtoList)
+                .collectList()
+                .filter(booleans -> !booleans.contains(Boolean.FALSE))
+                .map(success -> new ResponseDto("Successfully delete events"))
+                .switchIfEmpty(Mono.just(new ResponseDto("Fail to delete. Cannot find events")));
+    }
     @DeleteMapping("/{id}")
     public Mono<ResponseDto> deleteEventById(@PathVariable String id) {
         return eventService
