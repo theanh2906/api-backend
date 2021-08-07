@@ -1,0 +1,26 @@
+server:
+  port: 80
+
+spring:
+  data:
+    postgres:
+      host: 149.28.23.96
+      port: 5432
+      database: postgres
+      username: postgres
+      password: Jackytang2906
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: Jackytang2906
+    url: jdbc:postgresql://149.28.23.96:5432/postgres
+    hikari:
+      maximum-pool-size: 5
+      minimum-idle: 1
+
+r2dbc:
+  db:
+    connection:
+      minimum:
+        idle: 1
