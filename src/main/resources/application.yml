@@ -4,17 +4,17 @@ server:
 spring:
   data:
     postgres:
-      host: ec2-3-89-0-52.compute-1.amazonaws.com
+      host: 149.28.23.96
       port: 5432
-      database: dfuvm1cqiniop6
-      username: hhklwjzftuogti
-      password: 7e8f3e073d5705944ef05d588c77ce8cd35f770ab96a2700f9750c4a5fe0f8dc
+      database: postgres
+      username: postgres
+      password: Jackytang2906
 
   datasource:
     driver-class-name: org.postgresql.Driver
-    username: hhklwjzftuogti
-    password: 7e8f3e073d5705944ef05d588c77ce8cd35f770ab96a2700f9750c4a5fe0f8dc
-    url: postgres://hhklwjzftuogti:7e8f3e073d5705944ef05d588c77ce8cd35f770ab96a2700f9750c4a5fe0f8dc@ec2-3-89-0-52.compute-1.amazonaws.com:5432/dfuvm1cqiniop6
+    username: postgres
+    password: Jackytang2906
+    url: jdbc:postgresql://149.28.23.96:5432/postgres
     hikari:
       maximum-pool-size: 5
       minimum-idle: 1
