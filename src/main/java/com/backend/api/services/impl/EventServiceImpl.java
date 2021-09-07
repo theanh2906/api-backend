@@ -22,7 +22,7 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public Flux<EventModel> getAllEvents() {
-        return eventRepository.findAll();
+        return eventRepository.findAll().doOnError(throwable -> throwable.getMessage());
     }
 
     @Override
