@@ -18,9 +18,19 @@ spring:
     hikari:
       maximum-pool-size: 5
       minimum-idle: 1
+  servlet:
+    multipart:
+      max-request-size: 100MB
+      max-file-size: 100MB
 
 r2dbc:
   db:
     connection:
       minimum:
         idle: 1
+
+fshare:
+  app-key: dMnqMMZMUnN5YpvKENaEhdQQ5jxDqddt
+  user-agent: UsefulTools2022-710L5E
+  email: theanh2906@gmail.com
+  password: Jackytang2906*
