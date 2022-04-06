@@ -4,6 +4,11 @@ import com.backend.api.dtos.fshare.*;
 import com.backend.api.services.FshareService;
 import com.backend.api.shared.FshareConstant;
 import com.backend.api.shared.HeaderAttribute;
+import com.backend.api.utils.Utils;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -54,9 +59,11 @@ public class FshareServiceImpl implements FshareService {
                                         .post()
                                         .uri(downloadLink.getLocation())
                                         .header(HeaderAttribute.USER_AGENT, FshareConstant.USER_AGENT)
+                                        .accept(MediaType.ALL)
                                         .body(Mono.just(file.getBytes()), byte[].class)
                                         .retrieve()
-                                        .bodyToMono(UploadResponse.class);
+                                        .bodyToMono(String.class)
+                                        .mapNotNull(res -> Utils.map(UploadResponse.class, res));
                             } catch (IOException e) {
                                 e.printStackTrace();
                                 return Mono.error(e);
