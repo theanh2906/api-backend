@@ -5,10 +5,8 @@ import com.backend.api.services.FshareService;
 import com.backend.api.shared.FshareConstant;
 import com.backend.api.shared.HeaderAttribute;
 import com.backend.api.utils.Utils;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -18,7 +16,7 @@ import java.io.IOException;
 
 @Service
 public class FshareServiceImpl implements FshareService {
-    private WebClient webClient = WebClient.create();
+    private final WebClient webClient = WebClient.create();
 
     @Override
     public Mono<LoginResponse> login() {
@@ -69,6 +67,16 @@ public class FshareServiceImpl implements FshareService {
                                 return Mono.error(e);
                             }
                         }));
+    }
+
+    @Override
+    public Mono<LogoutResponse> logout(String sessionId, String token) {
+        return webClient
+                .get()
+                .uri(FshareConstant.LOGOUT_URL)
+                .cookie(HeaderAttribute.SESSION_ID, sessionId)
+                .retrieve()
+                .bodyToMono(LogoutResponse.class);
     }
 
     private Mono<UploadRequest> createUploadRequest(MultipartFile file, String filePath, String token) {
