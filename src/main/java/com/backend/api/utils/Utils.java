@@ -2,10 +2,15 @@ package com.backend.api.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Map;
 
 public class Utils {
+    private static final Logger LOG = LoggerFactory.getLogger(Utils.class);
     public static <T> T map(Class<T> clazz, String object) {
         ObjectMapper mapper = new ObjectMapper();
         try {
@@ -26,5 +31,16 @@ public class Utils {
             return builder.toString();
         }
         return null;
+    }
+
+    public static void createDirectory(String path) {
+        Path directory = Path.of(path);
+        if (!Files.exists(directory)) {
+            try {
+                Files.createDirectory(directory);
+            } catch (Exception e) {
+                LOG.error(e.getMessage());
+            }
+        }
     }
 }
