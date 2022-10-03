@@ -32,9 +32,7 @@ public class BarcodeController {
         try {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             ImageIO.write(barcodeService.generateQRCode(text), "png", baos);
-            Map<String, String> response = new HashMap<>();
-            response.put("data", "data:image/png;base64," + Base64.getEncoder().encodeToString(baos.toByteArray()));
-            return ResponseEntity.ok().body(response);
+            return ResponseEntity.ok().body("data:image/png;base64," + Base64.getEncoder().encodeToString(baos.toByteArray()));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
