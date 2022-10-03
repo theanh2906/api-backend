@@ -8,10 +8,11 @@
         <version>2.6.6</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
+    <packaging>war</packaging>
     <groupId>com.backend</groupId>
     <artifactId>api</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>api-backend</name>
+    <version>0.0.1</version>
+    <name>app</name>
     <description>Demo project for Spring Boot</description>
     <properties>
         <java.version>11</java.version>
@@ -65,12 +66,18 @@
             <artifactId>r2dbc-postgresql</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>javase</artifactId>
+            <version>3.5.0</version>
+        </dependency>
+        <dependency>
             <groupId>io.r2dbc</groupId>
             <artifactId>r2dbc-pool</artifactId>
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
+            <version>42.3.7</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -103,7 +110,7 @@
         <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
-            <version>1.14.3</version>
+            <version>1.15.3</version>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>
@@ -123,6 +130,7 @@
     </dependencies>
 
     <build>
+        <finalName>app</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

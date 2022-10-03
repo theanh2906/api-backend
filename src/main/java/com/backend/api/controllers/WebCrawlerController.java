@@ -21,20 +21,6 @@ public class WebCrawlerController {
     @Autowired
     private WebCrawlerService webCrawlerService;
 
-    //    public static void main(String[] args) {
-//        WebCrawlerService crawler = new WebCrawlerServiceImpl();
-//        AtomicInteger i = new AtomicInteger();
-//        String rootURL = "https://www.google.com/";
-//        Utils.createDirectory("./images");
-//        crawler.findImageLinks(rootURL, ".entry-content").forEach(link -> {
-//            try {
-//                FileUtils.copyURLToFile(new URL(link), new File("./images/" + i + ".jpg"), 10000, 10000);
-//                i.getAndIncrement();
-//            } catch (IOException e) {
-//                throw new RuntimeException(e);
-//            }
-//        });
-//    }
     @GetMapping("/download-images")
     public ResponseEntity<?> downloadImages(@RequestParam String url, @RequestParam String selector, final HttpServletResponse response) {
         try {
@@ -49,7 +35,7 @@ public class WebCrawlerController {
     }
 
     @GetMapping("/save-images")
-    public void saveImages(@RequestParam String url, @RequestParam String selector, @RequestParam String imageAttribute) {
+    public void saveImages(@RequestParam String url, @RequestParam String selector, @RequestParam(required = false) String imageAttribute) {
         try {
             Map<String, String> params = new HashMap<>();
             params.put("url", url);

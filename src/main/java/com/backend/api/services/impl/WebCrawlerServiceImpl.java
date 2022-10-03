@@ -47,11 +47,12 @@ public class WebCrawlerServiceImpl implements WebCrawlerService {
                     .stream()
                     .filter(link -> !link.startsWith("data:") && !link.contains(".png"))
                     .map(link -> {
+                        String http = url.split("//")[0];
                         if (link.startsWith("//")) {
-                            link = "https:".concat(link);
+                            link = http.concat(link);
                         } else if (link.startsWith("/")) {
                             try {
-                                link = "https://" + new URL(url).getHost().concat(link);
+                                link = http.concat("//") + new URL(url).getHost().concat(link);
                             } catch (MalformedURLException e) {
                                 throw new RuntimeException(e);
                             }
