@@ -28,11 +28,15 @@ public class BarcodeController {
     private BarcodeService barcodeService;
 
     @GetMapping("/image")
-    public ResponseEntity<?> getBase64QRImage(@RequestParam String text) {
+    public ResponseEntity<?> getBase64QRImage(@RequestParam String text, HttpServletResponse response) {
         try {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             ImageIO.write(barcodeService.generateQRCode(text), "png", baos);
-            return ResponseEntity.ok().body("data:image/png;base64," + Base64.getEncoder().encodeToString(baos.toByteArray()));
+            response.setContentType(MediaType.IMAGE_JPEG_VALUE);
+            InputStream inputStream = new BufferedInputStream(new ByteArrayInputStream(baos.toByteArray()));
+            IOUtils.copy(inputStream, response.getOutputStream());
+            IOUtils.closeQuietly(response.getOutputStream());
+            return ResponseEntity.ok().body("Success");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
