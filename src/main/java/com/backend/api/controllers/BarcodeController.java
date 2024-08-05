@@ -1,6 +1,7 @@
 package com.backend.api.controllers;
 
 import com.backend.api.services.BarcodeService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,14 +13,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.imageio.ImageIO;
-import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/qr")

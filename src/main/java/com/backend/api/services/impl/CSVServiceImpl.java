@@ -22,7 +22,7 @@ public class CSVServiceImpl implements CSVService {
         List<String> headers = new ArrayList<>();
         try {
             Reader reader = Files.newBufferedReader(Paths.get(filePath));
-            CSVParser parser = new CSVParser(reader, CSVFormat.DEFAULT.withFirstRecordAsHeader());
+            CSVParser parser = new CSVParser(reader, CSVFormat.Builder.create().setHeader().setSkipHeaderRecord(true).build());
             headers = parser.getHeaderNames();
         } catch (Exception e) {
             e.printStackTrace();
@@ -31,10 +31,6 @@ public class CSVServiceImpl implements CSVService {
     }
 
     public static void main(String[] args) {
-//        CSVServiceImpl test = new CSVServiceImpl();
-//        String filePath = "uploads/SonarQube-assigned.csv";
-////        test.toJson(file).stream().forEach(System.out::println);
-//        test.toJson(filePath).stream().forEach(System.out::println);
         File input = new File("uploads/SonarQube-assigned.csv");
         try {
             CsvSchema csv = CsvSchema.emptySchema().withHeader();

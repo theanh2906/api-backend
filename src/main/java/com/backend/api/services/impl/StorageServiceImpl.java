@@ -12,6 +12,7 @@ import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 @Service
@@ -30,7 +31,7 @@ public class StorageServiceImpl implements StorageService {
     @Override
     public void save(MultipartFile file) {
         try {
-            Files.copy(file.getInputStream(), root.resolve(file.getOriginalFilename()));
+            Files.copy(file.getInputStream(), root.resolve(Objects.requireNonNull(file.getOriginalFilename())));
         } catch (IOException e) {
             throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
         }

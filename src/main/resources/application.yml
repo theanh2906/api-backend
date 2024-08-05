@@ -2,22 +2,6 @@ server:
   port: 8082
 
 spring:
-  data:
-    postgres:
-      host: localhost
-      port: 5432
-      database: postgres
-      username: postgres
-      password: Jackytang2906
-
-  datasource:
-    driver-class-name: org.postgresql.Driver
-    username: postgres
-    password: Jackytang2906
-    url: jdbc:postgresql://localhost:5432/postgres
-    hikari:
-      maximum-pool-size: 5
-      minimum-idle: 1
   servlet:
     multipart:
       max-request-size: 1024MB
