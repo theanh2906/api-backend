@@ -9,6 +9,12 @@ spring:
   mvc:
     async:
       request-timeout: -1
+  cloud:
+    azure:
+      storage:
+        queue:
+          account-name: benna
+          queue-name: benna-queue
 
 r2dbc:
   db:
