@@ -17,10 +17,10 @@ spring:
           queue-name: benna-queue
           credential:
             managed-identity-enabled: true
-        blob:
-          account-name: ${AZURE_STORAGE_ACCOUNT_NAME}
-          account-key: ${AZURE_STORAGE_ACCOUNT_KEY}
-          endpoint: https://${AZURE_STORAGE_ACCOUNT_NAME}.blob.core.windows.net
+#        blob:
+#          account-name: ${AZURE_STORAGE_ACCOUNT_NAME}
+#          account-key: ${AZURE_STORAGE_ACCOUNT_KEY}
+#          endpoint: https://${AZURE_STORAGE_ACCOUNT_NAME}.blob.core.windows.net
       appconfiguration:
         credential:
           managed-identity-enabled: true
