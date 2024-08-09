@@ -1,5 +1,6 @@
 package com.backend.api.functions;
 
+import com.azure.security.keyvault.secrets.SecretClient;
 import com.backend.api.dtos.ResponseDto;
 import com.microsoft.azure.functions.ExecutionContext;
 import com.microsoft.azure.functions.HttpMethod;
@@ -22,6 +23,8 @@ import java.util.function.Function;
 public class MyAzureFunction {
     @Autowired
     private Function<String, String> uppercase;
+    @Autowired
+    private SecretClient secretClient;
 
     // The FunctionCatalog leverages the Spring Cloud Function framework.
     @Autowired private FunctionCatalog functionCatalog;
@@ -50,7 +53,7 @@ public class MyAzureFunction {
     }
 
     @FunctionName("scf")
-    public String springCloudFunction(
+    public ResponseEntity<?> springCloudFunction(
             @HttpTrigger(name = "req",
                     authLevel = AuthorizationLevel.ANONYMOUS,
                     methods = HttpMethod.GET) HttpRequestMessage<Optional<String>> request,
@@ -60,7 +63,7 @@ public class MyAzureFunction {
         // Use SCF composition. Composed functions are not just spring beans but SCF such.
         Function<String, String> composed = this.functionCatalog.lookup("reverse|uppercase");
 
-        return composed.apply(request.getBody().orElse(""));
+        return ResponseEntity.ok(new ResponseDto(secretClient.getSecret("clientId").getValue()));
     }
 
 }
