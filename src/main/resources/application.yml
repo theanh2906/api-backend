@@ -2,6 +2,8 @@ server:
   port: 8082
 
 spring:
+  main:
+    allow-circular-references: true
   servlet:
     multipart:
       max-request-size: 1024MB
@@ -17,10 +19,10 @@ spring:
           queue-name: benna-queue
           credential:
             managed-identity-enabled: true
-#        blob:
-#          account-name: ${AZURE_STORAGE_ACCOUNT_NAME}
-#          account-key: ${AZURE_STORAGE_ACCOUNT_KEY}
-#          endpoint: https://${AZURE_STORAGE_ACCOUNT_NAME}.blob.core.windows.net
+        blob:
+          account-name: benna
+          account-key: GNjwKgTb919QBC8oN84mOgSUsUXCQwR61KhCnpMrDom7aAg4fpzqkQakeJuGDN9nr0XU7zRS5iYA+ASthMRkMA==
+          endpoint: https://benna.blob.core.windows.net
       appconfiguration:
         credential:
           managed-identity-enabled: true

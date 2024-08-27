@@ -58,5 +58,13 @@ public class Constant {
         public static final String QUEUE_NAME_ENDPOINT = "https://benna.queue.core.windows.net/benna-queue";
         public static final String STORAGE_CONNECTION_STRING = "DefaultEndpointsProtocol=https;AccountName=benna;AccountKey=GNjwKgTb919QBC8oN84mOgSUsUXCQwR61KhCnpMrDom7aAg4fpzqkQakeJuGDN9nr0XU7zRS5iYA+ASthMRkMA==;EndpointSuffix=core.windows.net";
         public static final String VAULT_URL = "https://benna-key-vault.vault.azure.net/";
+
+        public static class KeyVault {
+            public static final String CLIENT_ID = "ClientId";
+            public static final String CLIENT_SECRET = "ClientSecret";
+            public static final String TENANT_ID = "TenantId";
+            public static final String QUEUE_NAME = "QueueName";
+            public static final String STORAGE_CONNECTION_STRING = "StorageConnectionString";
+        }
     }
 }

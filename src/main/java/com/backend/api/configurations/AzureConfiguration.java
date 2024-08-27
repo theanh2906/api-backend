@@ -2,9 +2,6 @@ package com.backend.api.configurations;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
-import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.identity.ManagedIdentityCredential;
-import com.azure.identity.ManagedIdentityCredentialBuilder;
 import com.azure.security.keyvault.keys.KeyClient;
 import com.azure.security.keyvault.keys.KeyClientBuilder;
 import com.azure.security.keyvault.secrets.SecretClient;
@@ -39,13 +36,6 @@ public class AzureConfiguration {
     }
 
     @Bean
-    public ManagedIdentityCredential managedIdentityCredential() {
-        return new ManagedIdentityCredentialBuilder()
-                .clientId("668a0ff9-708d-4fee-86f2-5dac235f0c1b")
-                .build();
-    }
-
-    @Bean
     public QueueClient queueClient() {
         return new QueueClientBuilder()
                 .credential(tokenCredential())
@@ -59,7 +49,7 @@ public class AzureConfiguration {
     public SecretClient secretClient() {
         return new SecretClientBuilder()
                 .vaultUrl(Constant.Azure.VAULT_URL)
-                .credential(new DefaultAzureCredentialBuilder().build())
+                .credential(tokenCredential())
                 .buildClient();
     }
 

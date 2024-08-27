@@ -15,9 +15,9 @@ public class ApiBackendApplication implements CommandLineRunner {
     private QueueClient queueClient;
     @Override
     public void run(String... args) throws Exception {
-        queueClient.create();
-        SendMessageResult sendMessageResult = queueClient.sendMessage("test");
-        QueueMessageItem queueMessageItem = queueClient.receiveMessage();
+//        queueClient.create();
+//        SendMessageResult sendMessageResult = queueClient.sendMessage("test");
+//        QueueMessageItem queueMessageItem = queueClient.receiveMessage();
     }
 
     public static void main(String[] args) {
