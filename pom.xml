@@ -176,7 +176,10 @@
             <artifactId>azure-core</artifactId>
             <version>1.51.0</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/com.azure/azure-identity -->
+        <dependency>
+            <groupId>com.azure.spring</groupId>
+            <artifactId>spring-cloud-azure-starter-servicebus</artifactId>
+        </dependency>
     </dependencies>
     <dependencyManagement>
         <dependencies>

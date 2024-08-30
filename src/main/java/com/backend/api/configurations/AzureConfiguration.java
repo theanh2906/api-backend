@@ -2,6 +2,12 @@ package com.backend.api.configurations;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.messaging.servicebus.ServiceBusClientBuilder;
+import com.azure.messaging.servicebus.ServiceBusErrorContext;
+import com.azure.messaging.servicebus.ServiceBusProcessorClient;
+import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
+import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
+import com.azure.messaging.servicebus.ServiceBusSenderClient;
 import com.azure.security.keyvault.keys.KeyClient;
 import com.azure.security.keyvault.keys.KeyClientBuilder;
 import com.azure.security.keyvault.secrets.SecretClient;
@@ -29,9 +35,9 @@ public class AzureConfiguration {
     @Bean
     public TokenCredential tokenCredential() {
         return new ClientSecretCredentialBuilder()
-                .clientId(Constant.Azure.CLIENT_ID)
-                .clientSecret(Constant.Azure.CLIENT_SECRET)
-                .tenantId(Constant.Azure.TENANT_ID)
+                .clientId(Constant.Azure.Credential.CLIENT_ID)
+                .clientSecret(Constant.Azure.Credential.CLIENT_SECRET)
+                .tenantId(Constant.Azure.Credential.TENANT_ID)
                 .build();
     }
 
@@ -39,16 +45,16 @@ public class AzureConfiguration {
     public QueueClient queueClient() {
         return new QueueClientBuilder()
                 .credential(tokenCredential())
-                .queueName(Constant.Azure.QUEUE_NAME)
-                .endpoint(Constant.Azure.QUEUE_NAME_ENDPOINT)
-                .connectionString(Constant.Azure.STORAGE_CONNECTION_STRING)
+                .queueName(Constant.Azure.Storage.Queue.QUEUE_NAME)
+                .endpoint(Constant.Azure.Storage.Queue.QUEUE_NAME_ENDPOINT)
+                .connectionString(Constant.Azure.Storage.CONNECTION_STRING)
                 .buildClient();
     }
 
     @Bean
     public SecretClient secretClient() {
         return new SecretClientBuilder()
-                .vaultUrl(Constant.Azure.VAULT_URL)
+                .vaultUrl(Constant.Azure.KeyVault.VAULT_URL)
                 .credential(tokenCredential())
                 .buildClient();
     }
@@ -57,7 +63,39 @@ public class AzureConfiguration {
     public KeyClient keyClient() {
         return new KeyClientBuilder()
                 .credential(tokenCredential())
-                .vaultUrl(Constant.Azure.VAULT_URL)
+                .vaultUrl(Constant.Azure.KeyVault.VAULT_URL)
                 .buildClient();
+    }
+
+    private static void processMessage(ServiceBusReceivedMessageContext context) {
+        ServiceBusReceivedMessage message = context.getMessage();
+        System.out.printf("Processing message. Id: %s, Sequence #: %s. Contents: %s%n",
+                message.getMessageId(), message.getSequenceNumber(), message.getBody());
+    }
+
+    private static void processError(ServiceBusErrorContext context) {
+        System.out.printf("Error when receiving messages from namespace: '%s'. Entity: '%s'%n",
+                context.getFullyQualifiedNamespace(), context.getEntityPath());
+    }
+
+    @Bean
+    public ServiceBusSenderClient senderClient(ServiceBusClientBuilder builder) {
+        return builder
+                .connectionString(Constant.Azure.ServiceBus.CONNECTION_STRING)
+                .sender()
+                .queueName(Constant.Azure.ServiceBus.QUEUE_NAME)
+                .buildClient();
+    }
+
+    @Bean
+    ServiceBusProcessorClient serviceBusProcessorClient(ServiceBusClientBuilder builder) {
+        return builder
+                .connectionString(Constant.Azure.ServiceBus.CONNECTION_STRING)
+                .processor()
+                .queueName(Constant.Azure.ServiceBus.QUEUE_NAME)
+                .processMessage(AzureConfiguration::processMessage)
+                .processError(AzureConfiguration::processError)
+                .maxConcurrentCalls(5)
+                .buildProcessorClient();
     }
 }

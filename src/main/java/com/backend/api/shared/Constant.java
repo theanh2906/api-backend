@@ -45,19 +45,28 @@ public class Constant {
     }
 
     public static class Azure {
-        public static final String CLIENT_SECRET = "7ry8Q~jqQC1FL1R6V5.wh.rx7kZRG6dv-G-hOdhx";
-        public static final String TENANT_ID = "90d076c5-6610-4955-bccd-4f99ae488ef0";
-        //        public static final String CLIENT_ID = "48447683-68aa-45c3-beac-c613aee85234";
-        public static final String CLIENT_ID = "48447683-68aa-45c3-beac-c613aee85234";
         public static final String[] SCOPES = new String[] {
                 ".default",
         };
         public static final String REDIRECT_URI = "http://localhost:8082/api/azure/callback/";
         public static final String[] ALLOWED_HOSTS = new String[]{"*"};
-        public static final String QUEUE_NAME = "benna-queue";
-        public static final String QUEUE_NAME_ENDPOINT = "https://benna.queue.core.windows.net/benna-queue";
+
         public static final String STORAGE_CONNECTION_STRING = "DefaultEndpointsProtocol=https;AccountName=benna;AccountKey=GNjwKgTb919QBC8oN84mOgSUsUXCQwR61KhCnpMrDom7aAg4fpzqkQakeJuGDN9nr0XU7zRS5iYA+ASthMRkMA==;EndpointSuffix=core.windows.net";
-        public static final String VAULT_URL = "https://benna-key-vault.vault.azure.net/";
+
+        public static final class Credential {
+            public static final String CLIENT_SECRET = "7ry8Q~jqQC1FL1R6V5.wh.rx7kZRG6dv-G-hOdhx";
+            public static final String TENANT_ID = "90d076c5-6610-4955-bccd-4f99ae488ef0";
+            //        public static final String CLIENT_ID = "48447683-68aa-45c3-beac-c613aee85234";
+            public static final String CLIENT_ID = "48447683-68aa-45c3-beac-c613aee85234";
+        }
+
+        public static final class Storage {
+            public static final String CONNECTION_STRING = "DefaultEndpointsProtocol=https;AccountName=benna;AccountKey=GNjwKgTb919QBC8oN84mOgSUsUXCQwR61KhCnpMrDom7aAg4fpzqkQakeJuGDN9nr0XU7zRS5iYA+ASthMRkMA==;EndpointSuffix=core.windows.net";
+            public static final class Queue {
+                public static final String QUEUE_NAME = "benna-queue";
+                public static final String QUEUE_NAME_ENDPOINT = "https://benna.queue.core.windows.net/benna-queue";
+            }
+        }
 
         public static class KeyVault {
             public static final String CLIENT_ID = "ClientId";
@@ -65,6 +74,13 @@ public class Constant {
             public static final String TENANT_ID = "TenantId";
             public static final String QUEUE_NAME = "QueueName";
             public static final String STORAGE_CONNECTION_STRING = "StorageConnectionString";
+            public static final String VAULT_URL = "https://benna-key-vault.vault.azure.net/";
+        }
+
+        public static class ServiceBus {
+            public static final String NAMESPACE = "theanh2906";
+            public static final String QUEUE_NAME = "benna";
+            public static final String CONNECTION_STRING = "Endpoint=sb://theanh2906.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=RdikpQvetuZlTnU5V/XuAwEUszaNLzxTf+ASbNqbGAw=";
         }
     }
 }

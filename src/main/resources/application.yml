@@ -13,6 +13,10 @@ spring:
       request-timeout: -1
   cloud:
     azure:
+      servicebus:
+        namespace: theanh2906
+        entity-name: benna
+        entity-type: queue
       storage:
         queue:
           account-name: benna
