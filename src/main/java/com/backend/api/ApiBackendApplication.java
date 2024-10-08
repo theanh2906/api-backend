@@ -3,6 +3,7 @@ package com.backend.api;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.messaging.servicebus.ServiceBusSenderClient;
 import com.azure.storage.queue.QueueClient;
+import com.backend.api.services.ServiceBusMessagingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -16,13 +17,13 @@ public class ApiBackendApplication implements CommandLineRunner {
     @Autowired
     private ServiceBusSenderClient senderClient;
     @Autowired
-    private ServiceBusProcessorClient processorClient;
+    private ServiceBusMessagingService messagingService;
     @Override
     public void run(String... args) throws Exception {
 //        queueClient.create();
 //        SendMessageResult sendMessageResult = queueClient.sendMessage("test");
 //        QueueMessageItem queueMessageItem = queueClient.receiveMessage();
-        processorClient.start();
+//        messagingService.startProcessor();
     }
 
     public static void main(String[] args) {

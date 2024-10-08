@@ -6,4 +6,5 @@ import lombok.Data;
 public class MessageObject {
     private String type;
     private String data;
+    private String id;
 }

@@ -2,6 +2,10 @@ package com.backend.api.functions;
 
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.backend.api.dtos.ResponseDto;
+import com.backend.api.models.MessageObject;
+import com.backend.api.services.ServiceBusMessagingService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.azure.functions.ExecutionContext;
 import com.microsoft.azure.functions.HttpMethod;
 import com.microsoft.azure.functions.HttpRequestMessage;
@@ -25,6 +29,8 @@ public class MyAzureFunction {
     private Function<String, String> uppercase;
     @Autowired
     private SecretClient secretClient;
+    @Autowired
+    private ServiceBusMessagingService messagingService;
 
     // The FunctionCatalog leverages the Spring Cloud Function framework.
     @Autowired private FunctionCatalog functionCatalog;
@@ -64,6 +70,26 @@ public class MyAzureFunction {
         Function<String, String> composed = this.functionCatalog.lookup("reverse|uppercase");
 
         return ResponseEntity.ok(new ResponseDto(secretClient.getSecret("clientId").getValue()));
+    }
+
+    @FunctionName("message")
+    public ResponseEntity<?> sendMessage(
+            @HttpTrigger(name = "req",
+                    authLevel = AuthorizationLevel.ANONYMOUS,
+                    methods = HttpMethod.POST) HttpRequestMessage<Optional<Object>> request,
+            ExecutionContext context
+    ) {
+        final MessageObject message = new MessageObject();
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            message.setId(String.valueOf(System.currentTimeMillis()));
+            message.setData(mapper.writeValueAsString(request.getBody().orElse("")));
+            message.setType("request");
+            this.messagingService.sendMessage(message);
+            return ResponseEntity.ok(message);
+        } catch (JsonProcessingException e) {
+            return ResponseEntity.badRequest().body(new ResponseDto(e.getMessage()));
+        }
     }
 
 }

@@ -14,7 +14,9 @@ import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.storage.queue.QueueClient;
 import com.azure.storage.queue.QueueClientBuilder;
+import com.backend.api.models.MessageObject;
 import com.backend.api.shared.Constant;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -67,35 +69,16 @@ public class AzureConfiguration {
                 .buildClient();
     }
 
-    private static void processMessage(ServiceBusReceivedMessageContext context) {
+    public static void processMessage(ServiceBusReceivedMessageContext context) {
         ServiceBusReceivedMessage message = context.getMessage();
+        ObjectMapper mapper = new ObjectMapper();
         System.out.printf("Processing message. Id: %s, Sequence #: %s. Contents: %s%n",
                 message.getMessageId(), message.getSequenceNumber(), message.getBody());
+        MessageObject object = message.getBody().toObject(MessageObject.class);
     }
 
-    private static void processError(ServiceBusErrorContext context) {
+    public static void processError(ServiceBusErrorContext context) {
         System.out.printf("Error when receiving messages from namespace: '%s'. Entity: '%s'%n",
                 context.getFullyQualifiedNamespace(), context.getEntityPath());
-    }
-
-    @Bean
-    public ServiceBusSenderClient senderClient(ServiceBusClientBuilder builder) {
-        return builder
-                .connectionString(Constant.Azure.ServiceBus.CONNECTION_STRING)
-                .sender()
-                .queueName(Constant.Azure.ServiceBus.QUEUE_NAME)
-                .buildClient();
-    }
-
-    @Bean
-    ServiceBusProcessorClient serviceBusProcessorClient(ServiceBusClientBuilder builder) {
-        return builder
-                .connectionString(Constant.Azure.ServiceBus.CONNECTION_STRING)
-                .processor()
-                .queueName(Constant.Azure.ServiceBus.QUEUE_NAME)
-                .processMessage(AzureConfiguration::processMessage)
-                .processError(AzureConfiguration::processError)
-                .maxConcurrentCalls(5)
-                .buildProcessorClient();
     }
 }
